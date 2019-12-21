@@ -25,6 +25,7 @@ let sMsg = new SockMsg({Status: 200, Data: {
         Subtopic: ">Developers"
     })._msg
 }});
+console.log(sMsg.GetMsg());
 Write(sMsg.GetMsg());
 
 
