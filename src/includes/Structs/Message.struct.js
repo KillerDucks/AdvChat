@@ -2,7 +2,7 @@
 class Message
 {
     constructor(_msg = {
-        id: 0,
+        id: 0,        
         Author: "",
         Reply: {
             User: ""    
@@ -12,6 +12,7 @@ class Message
     })
     {
         this._msg = _msg;
+        this._msg.Timestamp = Date.now();
     }
 
     GetMsg()
