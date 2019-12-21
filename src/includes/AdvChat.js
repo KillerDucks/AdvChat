@@ -7,6 +7,7 @@ const SockHandler = require("./Socks/SocketHandler").SimpleSocks;
 
 // Require in Parsers
 const ChatParser = require("./Extensions/ChatParser.ext");
+const DataParser = require("./Extensions/DataParser.ext");
 
 
 // [Class] This is the main class for the AdvChat Server
@@ -41,7 +42,7 @@ class AdvChatServer
     _ConnectionHandler(socket)
     {
         // Create Socket Object
-        const x = new AdvSocket(socket, (ChatParser != undefined) ? {Func: ChatParser, Obj: this} : undefined);
+        const x = new AdvSocket(socket, (DataParser != undefined) ? {Func: DataParser, Obj: this} : undefined);
         this.Socks.Add(x);
         setInterval(x._TimeoutWrite.bind(x), 1000);
     }
