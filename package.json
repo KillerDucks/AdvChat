@@ -1,0 +1,30 @@
+{
+  "name": "advchat",
+  "version": "1.0.0",
+  "description": "An Advanced Chat Server",
+  "main": "src/service.js",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {
+    "estreamer": "^1.1.0",
+    "mongodb": "^3.4.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node tests/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KillerDucks/AdvChat.git"
+  },
+  "keywords": [
+    "Microservice"
+  ],
+  "author": "KillerDucks",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/KillerDucks/AdvChat/issues"
+  },
+  "homepage": "https://github.com/KillerDucks/AdvChat#readme"
+}
