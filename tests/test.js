@@ -5,6 +5,17 @@ const Message = require("../src/includes/Structs/Message.struct");
 const SockMsg = require("../src/includes/Structs/SockMsg.struct");
 const EventMsg = require("../src/includes/Structs/Event.struct");
 
+Sock._Sock.on("data", (data) => {
+     // Handle Incoming Events
+     try {
+        let e = JSON.parse(data);
+        console.log(e);
+    } catch (error) {
+        console.error(error);
+        process.exit(1);
+    }
+});
+
 function Write(data)
 {
     if(typeof(data) == "object")
@@ -17,17 +28,35 @@ function Write(data)
     }
 }
 
-let msg = new Message({id: 0, Author: "KillerDucks", Reply: 0, Message: "!Server", Embed: 0});
-let sMsg = new SockMsg({Status: 200, Data: {
-    AdvChat: msg.GetMsg(),
-    Event: new EventMsg({
-        Topic: "AdvChat",
-        Subtopic: ">Developers"
-    })._msg
-}});
-console.log(sMsg.GetMsg());
-Write(sMsg.GetMsg());
+function SendSampleEvent()
+{
+    let sMsg = new SockMsg({Status: 200, Type: "Event", Data: {
+        Event: new EventMsg({
+            Topic: "AdvChat",
+            Subtopic: ">Developers",
+            Type: "Sub"
+        })._msg
+    }});
+    console.log(sMsg.GetMsg());
+    Write(sMsg.GetMsg());
+}
 
+function SendSampleMessage(message)
+{
+    let msg = new Message({id: 0, Author: "KillerDucks", Reply: 0, Message: message, Embed: 0});
+    let sMsg = new SockMsg({Status: 200, Type: "AdvChat", Data: {
+        AdvChat: msg.GetMsg(),
+        Event: new EventMsg({
+            Topic: "AdvChat",
+            Subtopic: ">Developers"
+        })._msg
+    }});
+    console.log(sMsg.GetMsg());
+    Write(sMsg.GetMsg());
+}
+
+SendSampleEvent();
+SendSampleMessage("Okay Boomer");
 
 /**
  * Login();
