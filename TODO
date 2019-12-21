@@ -1,0 +1,7 @@
++ AdvChat.js
+    [X] Add the Pub/Sub events so that users can receive messages
+
++ EventParser.ext.js
+    [] Look into this as it may allow any client to sub to any server
+    [] This Emit isn't needed maybe remove
+    [] Look into this Type possibly not needed/used
