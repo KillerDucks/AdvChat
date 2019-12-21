@@ -8,6 +8,7 @@ const AdvSocket = require("../Socks/AdvSocket");
 function Parser(msg = new Message()._msg, AdvChat = new AdvServer(), AdvSock = new AdvSocket())
 {
     advMsg = msg.Data.AdvChat;
+    evtMsg = msg.Data.Event;
     // Message Format Detection
     if(typeof(advMsg) != "object")
     {
@@ -20,11 +21,13 @@ function Parser(msg = new Message()._msg, AdvChat = new AdvServer(), AdvSock = n
         // Message is assumed to be a type of server command
         console.log(`[AdvChat]\t Command Received => ${advMsg.Message.substr(1, advMsg.Message.length)}`);
         ExecuteCommand(advMsg.Message.substr(1, advMsg.Message.length), AdvSock);
-
-        // [Debug] Just to test events
-        msg.Data.Event.SockID = AdvSock._UUID;
-        AdvSock._Event.emit("subscribe", msg.Data.Event);
     }
+
+    // Publish the Message for Everyone
+    Publish(advMsg, evtMsg, AdvChat, AdvSock);
+
+    // [Debug]
+    console.log(`[${advMsg.Author}]\t ${advMsg.Message}`);
 }
 
 function ExecuteCommand(command = "", AdvSock = new AdvSocket())
@@ -65,6 +68,24 @@ function ExecuteCommand(command = "", AdvSock = new AdvSocket())
         }});
         AdvSock.Push(sMsg.GetMsg());
     }
+}
+
+function Publish(msg = new Message()._msg, evtMsg = new EventMsg()._msg, AdvChat = new AdvServer(), AdvSock = new AdvSocket())
+{
+    let subSocks = [];
+    AdvChat.Socks._Sockets.forEach(sock => {
+        if(sock._Subscriptions.includes(`${evtMsg.Topic}${evtMsg.Subtopic}`))
+        {
+            if(sock._UUID != AdvSock._UUID)
+            {
+                subSocks.push(sock);
+            }
+        }
+    });
+    // // Publish Event to the subbed sockets
+    subSocks.forEach(s => {
+        s.Push(msg);
+    });
 }
 
 
