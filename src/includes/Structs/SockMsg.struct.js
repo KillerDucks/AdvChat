@@ -3,6 +3,7 @@ class SockMsg
 {
     constructor(_msg = {
         Status: 200,
+        Type: "",
         Data: 0
     })
     {
