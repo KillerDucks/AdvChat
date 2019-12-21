@@ -1,9 +1,10 @@
 // [Structure] This is a simple Event Object Structure
-class SockMsg
+class EventMsg
 {
     constructor(_msg = {
         Topic: "",
-        Subtopic: ""
+        Subtopic: "",
+        Type: ""
     })
     {
         this._msg = _msg;
@@ -20,4 +21,4 @@ class SockMsg
     }
 }
 
-module.exports = SockMsg;
+module.exports = EventMsg;
