@@ -1,13 +1,17 @@
-// Require in needed modules
+// Require in needed standard modules
 const net = require("net");
+// Event Streamer to connect to the EventBroker
 const EventStreamer = require('estreamer');
+// DBDriver for access to the Prototypes
 const DBDriver = require("./DB_Driver");
+// DBAL_Storage to handle the DB for Storage context
+const DBAL_Storage = require("./Storage/Database.ext");
+// Socks to handle all of the Sockets
 const AdvSocket = require("./Socks/AdvSocket");
 const SockHandler = require("./Socks/SocketHandler").SimpleSocks;
 
 // Require in Parsers
-const ChatParser = require("./Extensions/ChatParser.ext");
-const DataParser = require("./Extensions/DataParser.ext");
+const DataParser = require("./Parsers/DataParser.ext");
 
 
 // [Class] This is the main class for the AdvChat Server
@@ -15,7 +19,7 @@ class AdvChatServer
 {
     constructor(_EventServer = {Host: "", Port: 0}, _DBConnection = new DBDriver, _Config = {Port: 0})
     {
-        // Create an empty Config Object
+        // Create an empty Config Object [TODO] Allow the Config from the Class init
         this.Config = {};
         // Event Broker Connection info
         (_EventServer.Host == 0 || _EventServer == undefined) ? this.Config.Events = undefined : this.Config.Events = _EventServer;
@@ -23,7 +27,9 @@ class AdvChatServer
         this._CreateServer();
         // Socks Handler
         this.Socks = new SockHandler();
-        this.test = "123"
+        // Do not change this value {Docs:[Core/Mods/Debugging]}
+        this.ModuleSeeker_Value = "AdvChat_ABC_123";
+        // Setup Storage
         // Call the Event Broker connection method
         // this._Connect2EventBroker(); [TODO] Uncomment after DB testing
     }
@@ -35,6 +41,7 @@ class AdvChatServer
                             .on("connection", this._ConnectionHandler.bind(this))
                             .on("close", this._ConnectionCloseHandler.bind(this))
                             .on("error", this._ConnectionErrorHandler.bind(this));
+        // Change the socket Host as it wont bind to * connections
         this._SocketSrv.listen(9090, "127.0.0.1");
     }
 
