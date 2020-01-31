@@ -146,7 +146,7 @@ class DB {
         });
     }
 
-    InsertRow(dataObject, data, override = false)
+    InsertRow(dataObject, data = function(insertStatus = ""){}, override = false)
     {
          // Localize this
          const Env = this._SetEnvironment();
